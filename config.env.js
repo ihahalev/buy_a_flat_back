@@ -40,6 +40,6 @@ module.exports = {
   },
 
   testUser: {
-    email: 'eugengamilov@gmail.com',
+    email: process.env.TEST_USER_EMAIL,
   },
 };
