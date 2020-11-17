@@ -5,6 +5,7 @@ const path = require('path');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
+const FacebookStrategy = require('passport-facebook');
 const configEnv = require('./config.env');
 const {
   usersRouter,
@@ -12,14 +13,15 @@ const {
   giftsRouter,
   transactionsRouter,
   googleRouter,
+  facebookRouter,
 } = require('./routers');
 
 const getIncrementBalance = require('./cron/getIncrementBalance');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./docs/index');
-const googleController = require('./routers/google.controller');
-const { mailer, getLogger, googleCred } = require('./helpers');
+const oauthController = require('./routers/oauth.controller');
+const { mailer, getLogger, googleCred, facebookCred } = require('./helpers');
 const connection = require('./database/Connection');
 
 const logger = getLogger('Server');
@@ -81,7 +83,8 @@ module.exports = class Server {
     this.server.use('/api/transactions', transactionsRouter);
     this.server.use('/api/families', familiesRouter);
     this.server.use('/api/gifts', giftsRouter);
-    this.server.use('/auth', googleRouter);
+    this.server.use('/auth/facebook', facebookRouter);
+    this.server.use('/auth/google', googleRouter);
     passport.use(
       new GoogleStrategy(googleCred, function (
         accessToken,
@@ -89,7 +92,19 @@ module.exports = class Server {
         profile,
         done,
       ) {
-        googleController.findOrCreate(profile, function (err, user) {
+        oauthController.findOrCreate(profile, function (err, user) {
+          done(err, user);
+        });
+      }),
+    );
+    passport.use(
+      new FacebookStrategy(facebookCred, function (
+        accessToken,
+        refreshToken,
+        profile,
+        done,
+      ) {
+        oauthController.findOrCreate(profile, function (err, user) {
           done(err, user);
         });
       }),
