@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/**/*.test.js --exit --timeout 5000",
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "dev": "nodemon index.js",
     "jest": "jest --detectOpenHandles",
     "jest:coverage": "jest --coverage",
@@ -57,6 +57,7 @@
     "node-cron": "^2.0.3",
     "nodemailer": "^6.4.14",
     "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
     "passport-google-oauth": "^2.0.0",
     "save": "^2.4.0",
     "swagger-ui-express": "^4.1.4",
