@@ -5,13 +5,13 @@ const OauthController = require('./oauth.controller');
 const googleRouter = express.Router();
 
 googleRouter.get(
-  '/google/callback',
+  '/callback',
   passport.authenticate('google'),
   OauthController.redirectGoogle,
 );
 
 googleRouter.get(
-  '/google',
+  '/',
   passport.authenticate('google', { scope: ['email', 'profile'] }),
 );
 

@@ -84,7 +84,7 @@ module.exports = class Server {
     this.server.use('/api/families', familiesRouter);
     this.server.use('/api/gifts', giftsRouter);
     this.server.use('/auth/facebook', facebookRouter);
-    this.server.use('/auth', googleRouter);
+    this.server.use('/auth/google', googleRouter);
     passport.use(
       new GoogleStrategy(googleCred, function (
         accessToken,
