@@ -10,6 +10,7 @@ module.exports = {
   jwtPrivateKey: process.env.TOKEN_PRIVATE_KEY,
   srvUrl: `${process.env.SRV_URL}`,
   hostUrl: `${process.env.HOST_URL}`,
+  hostUrl1: `${process.env.HOST_URL1}`,
   allowedOrigin: `${process.env.HOST_URL}`,
   allowedOrigin1: `${process.env.HOST_URL1}`,
 
