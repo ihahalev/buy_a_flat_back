@@ -1,7 +1,7 @@
 const { userModel } = require('../database/models');
 const configEnv = require('../config.env');
 
-class GoogleController {
+class OauthController {
   constructor() {}
   async findOrCreate(profile, callback) {
     try {
@@ -27,10 +27,9 @@ class GoogleController {
     const { token, email } = req.user;
     const host = configEnv.hostUrl;
     const hostLocal = configEnv.hostUrl1;
-
     email === configEnv.testUser.email
       ? res.redirect(`${hostLocal}/?token=${token}`)
       : res.redirect(`${host}/?token=${token}`);
   }
 }
-module.exports = new GoogleController();
+module.exports = new OauthController();
