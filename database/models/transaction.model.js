@@ -16,7 +16,7 @@ const transactionSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      default: transactionCategories[0],
+      default: transactionCategories[0].name,
       required: true,
     },
     comment: String,
