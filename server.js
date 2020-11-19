@@ -17,6 +17,7 @@ const {
 } = require('./routers');
 
 const getIncrementBalance = require('./cron/getIncrementBalance');
+const calculateDayLimit = require('./cron/calculateDayLimit');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./docs/index');
@@ -75,6 +76,7 @@ module.exports = class Server {
 
   initCron() {
     getIncrementBalance();
+    calculateDayLimit();
   }
 
   initRoutes() {
