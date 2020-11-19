@@ -10,15 +10,14 @@ const logger = getLogger('getIncrementBalance');
 
 async function main() {
   try {
-    await cron.schedule('15 0 1 * *', async function () {
+    await cron.schedule('0 0 1 * *', async function () {
       const allFamilies = await familyModel.find({});
 
       await Promise.all(
         allFamilies.map(async (item) => {
-
           item.giftsForUnpacking = Math.floor(
             (item.balance * item.flatSquareMeters) / item.flatPrice -
-            item.giftsUnpacked,
+              item.giftsUnpacked,
           );
 
           const sum = item.totalSalary + item.passiveIncome;

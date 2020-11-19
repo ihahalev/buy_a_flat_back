@@ -121,7 +121,7 @@ transactionSchema.static('monthlyAccrual', async function (
   let groupRes = [];
   if (!savings || savings <= 0) {
     const date = new Date();
-    const month = String(date.getMonth()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const startDate = `${date.getFullYear()}-${month}-01`;
     groupRes = await this.aggregate([
       {
