@@ -15,26 +15,25 @@ async function main() {
       await Promise.all(
         allFamilies.map(async (item) => {
 
-          const { _id, totalSalary, incomePercentageToSavings } = item;
+          const { _id, totalSalary, passiveIncome, incomePercentageToSavings } = item;
 
           const date = new Date;
           const month = date.getMonth();
           const year = date.getFullYear();
-          const daysPerMonth = new Date(year, month, 0).getDate();
-          const daysToMonthEnd = daysPerMonth - new Date().getDate() + 1;
+          const daysPerMonth = new Date(year, month + 1, 0).getDate();
+          const daysToMonthEnd = daysPerMonth - date.getDate() + 1;
 
           const monthBalance = await transactionModel.getFamilyMonthBalance(_id);
 
-          const available = (monthBalance - (totalSalary * incomePercentageToSavings) / 100);
+          const sum = totalSalary + passiveIncome;
+          const available = (monthBalance - (sum * incomePercentageToSavings) / 100);
           const dailySum = available / daysToMonthEnd;
-
-          let transaction = await transactionModel.findOne({ familyId: _id })
 
           await familyModel.findByIdAndUpdate(
             _id,
             {
-              dailyLimit: (dailySum - Number(transaction.amount)).toFixed(2),
-              monthLimit: (available - Number(transaction.amount)).toFixed(2),
+              dailyLimit: (dailySum).toFixed(2),
+              monthLimit: (available).toFixed(2),
             },
             { new: true },
           )
