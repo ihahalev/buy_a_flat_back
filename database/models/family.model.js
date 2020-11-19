@@ -1,9 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
-const familySchema = new Schema(
-  {
+const familySchema = new Schema({
     balance: { type: Number, default: 0, required: true },
     flatPrice: { type: Number, default: 0, required: true },
     flatSquareMeters: { type: Number, default: 0, required: true },
@@ -18,7 +17,7 @@ const familySchema = new Schema(
   { timestamps: true },
 );
 
-familySchema.method('updateGiftsUnpack', function () {
+familySchema.method("updateGiftsUnpack", function () {
   if (this.giftsForUnpacking <= 0) {
     this.giftsForUnpacking = 0;
 
