@@ -10,7 +10,9 @@ const familySchema = new Schema({
   giftsForUnpacking: { type: Number, default: 0 },
   totalSalary: { type: Number, default: 0, required: true },
   passiveIncome: { type: Number, default: 0, required: true },
-  incomePercentageToSavings: { type: Number, default: 0, required: true },
+  incomePercentageToSavings: { type: Number, default: 0 },
+  dailyLimit: { type: Number, default: 0 },
+  monthLimit: { type: Number, default: 0 },
 },
   { timestamps: true }
 );
