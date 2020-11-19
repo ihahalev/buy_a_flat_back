@@ -36,7 +36,7 @@ async function main() {
           await familyModel.findByIdAndUpdate(
             _id,
             {
-              dailyLimit: dailySum.toFixed(2),
+              dayLimit: dailySum.toFixed(2),
               monthLimit: available.toFixed(2),
             },
             { new: true },

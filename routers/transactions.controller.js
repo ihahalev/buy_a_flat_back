@@ -17,7 +17,7 @@ class TransactionController {
     try {
       const { _id: userId, familyId } = req.user;
       const { amount, type, category, comment } = req.body;
-      const defCategory = category ? category : transactionCategories[0];
+      const defCategory = category ? category : transactionCategories[0].name;
       const {
         _id,
         type: dbType,
@@ -35,6 +35,16 @@ class TransactionController {
       const monthBalance = await transactionModel.getFamilyMonthBalance(
         familyId,
       );
+      const family = await familyModel.findById(familyId);
+      if (_id) {
+        family.dayLimit -= amount;
+        const incomeSavings =
+          ((family.totalSalary + family.passiveIncome) *
+            family.incomePercentageToSavings) /
+          100;
+        family.monthLimit = monthBalance - incomeSavings;
+        await family.save();
+      }
       return responseNormalizer(201, res, {
         _id,
         amount,
@@ -43,6 +53,8 @@ class TransactionController {
         comment,
         transactionDate,
         monthBalance,
+        dayLimit: family.dayLimit,
+        monthLimit: family.monthLimit,
       });
     } catch (e) {
       errorHandler(req, res, e);
@@ -78,7 +90,12 @@ class TransactionController {
       const monthBalance = await transactionModel.getFamilyMonthBalance(
         familyId,
       );
-      return responseNormalizer(200, res, { monthBalance });
+      const { dayLimit, monthLimit } = await familyModel.findById(familyId);
+      return responseNormalizer(200, res, {
+        monthBalance,
+        dayLimit,
+        monthLimit,
+      });
     } catch (e) {
       errorHandler(req, res, e);
     }
