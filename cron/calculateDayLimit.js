@@ -6,7 +6,7 @@ const logger = getLogger('calculateDayLimit');
 
 async function main() {
   try {
-    await cron.schedule('0 0 * * *', async function () {
+    await cron.schedule('41 22 * * *', async function () {
       const allFamilies = await familyModel.find({});
 
       await Promise.all(
@@ -36,7 +36,7 @@ async function main() {
           await familyModel.findByIdAndUpdate(
             _id,
             {
-              dailyLimit: dailySum.toFixed(2),
+              dayLimit: dailySum.toFixed(2),
               monthLimit: available.toFixed(2),
             },
             { new: true },
