@@ -90,7 +90,28 @@ class TransactionController {
       const monthBalance = await transactionModel.getFamilyMonthBalance(
         familyId,
       );
-      const { dayLimit, monthLimit } = await familyModel.findById(familyId);
+      const { dayLimit, monthLimit } = req.family;
+      return responseNormalizer(200, res, {
+        monthBalance,
+        dayLimit,
+        monthLimit,
+      });
+    } catch (e) {
+      errorHandler(req, res, e);
+    }
+  }
+
+  async getDayExpenses(req, res) {
+    try {
+      const { familyId } = req.user;
+      const { date, page = 0, limit = 2 } = req.query;
+      const monthBalance = await transactionModel.getDayTransactions(
+        familyId,
+        date,
+        page,
+        limit,
+      );
+      const { dayLimit, monthLimit } = req.family;
       return responseNormalizer(200, res, {
         monthBalance,
         dayLimit,

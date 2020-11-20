@@ -28,4 +28,11 @@ router.get(
   transactionsController.getCurrentMonth,
 );
 
+router.get(
+  '/day',
+  authCheck,
+  transactionsController.familyAuthorization,
+  transactionsController.getDayExpenses,
+);
+
 module.exports = router;
