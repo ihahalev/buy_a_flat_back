@@ -11,6 +11,23 @@ router.post(
   transactionsController.createTransaction,
 );
 
+router.put(
+  '/:transactionId',
+  authCheck,
+  transactionsController.familyAuthorization,
+  transactionsController.transactionAuthorization,
+  transactionsController.validateTransactionUpdate,
+  transactionsController.updateTransaction,
+);
+
+router.delete(
+  '/:transactionId',
+  authCheck,
+  transactionsController.familyAuthorization,
+  transactionsController.transactionAuthorization,
+  transactionsController.deleteTransaction,
+);
+
 router.get('/categories', authCheck, transactionsController.getCategories);
 
 router.get(
@@ -26,6 +43,13 @@ router.get(
   authCheck,
   transactionsController.familyAuthorization,
   transactionsController.getCurrentMonth,
+);
+
+router.get(
+  '/day',
+  authCheck,
+  transactionsController.familyAuthorization,
+  transactionsController.getDayExpenses,
 );
 
 module.exports = router;

@@ -222,7 +222,7 @@ transactionSchema.static('getFamilyMonthBalance', async function (familyId) {
     },
     {
       $addFields: {
-        transactionDate: '$transactionDate',
+        // transactionDate: '$transactionDate',
         amount: { $ifNull: ['$amount', 0] },
         incomeAmount: {
           $cond: [{ $eq: ['$type', 'INCOME'] }, '$amount', 0],
@@ -251,6 +251,40 @@ transactionSchema.static('getFamilyMonthBalance', async function (familyId) {
   } else {
     return 0;
   }
+});
+
+transactionSchema.static('getDayRecords', async function (
+  familyId,
+  date,
+  page,
+  limit,
+) {
+  const startDate = new Date(date);
+  let endDate = new Date(date);
+  endDate.setDate(startDate.getDate() + 1);
+  return this.aggregate([
+    {
+      $match: {
+        familyId,
+      },
+    },
+    {
+      $match: {
+        type: 'EXPENSE',
+      },
+    },
+    {
+      $match: {
+        transactionDate: {
+          $gte: new Date(startDate),
+          $lt: new Date(endDate),
+        },
+      },
+    },
+    { $sort: { transactionDate: -1 } },
+    { $skip: page * limit },
+    { $limit: limit },
+  ]);
 });
 
 module.exports = mongoose.model('Transaction', transactionSchema);

@@ -90,7 +90,7 @@ class TransactionController {
       const monthBalance = await transactionModel.getFamilyMonthBalance(
         familyId,
       );
-      const { dayLimit, monthLimit } = await familyModel.findById(familyId);
+      const { dayLimit, monthLimit } = req.family;
       return responseNormalizer(200, res, {
         monthBalance,
         dayLimit,
@@ -101,21 +101,93 @@ class TransactionController {
     }
   }
 
+  async getDayExpenses(req, res) {
+    try {
+      const { familyId } = req.user;
+      const { date, page = 0, limit = 8 } = req.query;
+      const monthBalance = await transactionModel.getDayRecords(
+        familyId,
+        date,
+        page,
+        limit,
+      );
+      return responseNormalizer(200, res, {
+        monthBalance,
+      });
+    } catch (e) {
+      errorHandler(req, res, e);
+    }
+  }
+
+  async updateTransaction(req, res) {
+    try {
+      const transaction = req.transaction;
+      const { amount, category, comment } = req.body;
+      const updateFields = {};
+
+      if (amount) {
+        transaction.amount = amount;
+        updateFields.amount = amount;
+      }
+      if (category) {
+        transaction.category = category;
+        updateFields.category = category;
+      }
+      if (comment) {
+        transaction.comment = comment;
+        updateFields.comment = comment;
+      }
+      console.log(updateFields);
+      await transaction.save();
+      return responseNormalizer(200, res, updateFields);
+    } catch (e) {
+      errorHandler(req, res, e);
+    }
+  }
+
+  async deleteTransaction(req, res) {
+    try {
+      const transaction = req.transaction;
+      await transaction.remove();
+      return responseNormalizer(200, res, 'deleted');
+    } catch (e) {
+      errorHandler(req, res, e);
+    }
+  }
+
   async familyAuthorization(req, res, next) {
     try {
       const { familyId } = req.user;
       if (!familyId) {
-        throw new ApiError(403, 'Forbidden', {
-          message: 'Not part of a Family',
-        });
+        throw new ApiError(403, 'Not part of a Family');
       }
       const family = familyModel.findById(familyId);
       if (!family) {
-        throw new ApiError(403, 'Forbidden', {
-          message: 'Not part of a Family',
-        });
+        throw new ApiError(403, 'Not part of a Family');
       }
       req.family = family;
+      next();
+    } catch (e) {
+      errorHandler(req, res, e);
+    }
+  }
+
+  async transactionAuthorization(req, res, next) {
+    try {
+      const user = req.user;
+      const { transactionId } = req.params;
+
+      const transaction = await transactionModel.findById(transactionId);
+
+      if (!transaction) {
+        throw new ApiError(404, 'Transaction is not found');
+      }
+      console.log(transaction.userId);
+      console.log(user._id);
+      if (`${transaction.userId}` !== `${user._id}`) {
+        throw new ApiError(403, 'Not of user transaction');
+      }
+      req.transaction = transaction;
       next();
     } catch (e) {
       errorHandler(req, res, e);
@@ -127,6 +199,27 @@ class TransactionController {
       const { error: validationError } = Joi.object({
         amount: Joi.number().positive().integer().required(),
         type: Joi.string().valid(...transactionTypes),
+        category: Joi.alternatives().try(
+          Joi.string().valid(...transactionCategories),
+          Joi.string().empty('').default(transactionCategories[0]),
+        ),
+        comment: Joi.string().allow(''),
+      }).validate(req.body);
+
+      if (validationError) {
+        throw new ApiError(400, 'Bad request', validationError);
+      }
+
+      next();
+    } catch (e) {
+      errorHandler(req, res, e);
+    }
+  }
+
+  validateTransactionUpdate(req, res, next) {
+    try {
+      const { error: validationError } = Joi.object({
+        amount: Joi.number().positive().integer(),
         category: Joi.alternatives().try(
           Joi.string().valid(...transactionCategories),
           Joi.string().empty('').default(transactionCategories[0]),
