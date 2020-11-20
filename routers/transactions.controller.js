@@ -61,6 +61,42 @@ class TransactionController {
     }
   }
 
+  async updateTransaction(req, res) {
+    try {
+      const transaction = req.transaction;
+      const { amount, category, comment } = req.body;
+      const updateFields = {};
+
+      if (amount) {
+        transaction.amount = amount;
+        updateFields.amount = amount;
+      }
+      if (category) {
+        transaction.category = category;
+        updateFields.category = category;
+      }
+      if (comment) {
+        transaction.comment = comment;
+        updateFields.comment = comment;
+      }
+      console.log(updateFields);
+      await transaction.save();
+      return responseNormalizer(200, res, updateFields);
+    } catch (e) {
+      errorHandler(req, res, e);
+    }
+  }
+
+  async deleteTransaction(req, res) {
+    try {
+      const transaction = req.transaction;
+      await transaction.remove();
+      return responseNormalizer(200, res, 'deleted');
+    } catch (e) {
+      errorHandler(req, res, e);
+    }
+  }
+
   async getCategories(req, res) {
     try {
       return responseNormalizer(200, res, { transactionCategories });
@@ -105,51 +141,15 @@ class TransactionController {
     try {
       const { familyId } = req.user;
       const { date, page = 0, limit = 8 } = req.query;
-      const monthBalance = await transactionModel.getDayRecords(
+      const dayRecords = await transactionModel.getDayRecords(
         familyId,
         date,
         page,
         limit,
       );
       return responseNormalizer(200, res, {
-        monthBalance,
+        dayRecords,
       });
-    } catch (e) {
-      errorHandler(req, res, e);
-    }
-  }
-
-  async updateTransaction(req, res) {
-    try {
-      const transaction = req.transaction;
-      const { amount, category, comment } = req.body;
-      const updateFields = {};
-
-      if (amount) {
-        transaction.amount = amount;
-        updateFields.amount = amount;
-      }
-      if (category) {
-        transaction.category = category;
-        updateFields.category = category;
-      }
-      if (comment) {
-        transaction.comment = comment;
-        updateFields.comment = comment;
-      }
-      console.log(updateFields);
-      await transaction.save();
-      return responseNormalizer(200, res, updateFields);
-    } catch (e) {
-      errorHandler(req, res, e);
-    }
-  }
-
-  async deleteTransaction(req, res) {
-    try {
-      const transaction = req.transaction;
-      await transaction.remove();
-      return responseNormalizer(200, res, 'deleted');
     } catch (e) {
       errorHandler(req, res, e);
     }
