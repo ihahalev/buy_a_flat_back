@@ -25,7 +25,7 @@ router.delete(
   authCheck,
   transactionsController.familyAuthorization,
   transactionsController.transactionAuthorization,
-  transactionsController.createTransaction,
+  transactionsController.deleteTransaction,
 );
 
 router.get('/categories', authCheck, transactionsController.getCategories);

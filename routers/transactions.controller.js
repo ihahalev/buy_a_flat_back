@@ -137,8 +137,19 @@ class TransactionController {
         transaction.comment = comment;
         updateFields.comment = comment;
       }
+      console.log(updateFields);
       await transaction.save();
-      res.status(200).send(responseNormalizer(updateFields));
+      return responseNormalizer(200, res, updateFields);
+    } catch (e) {
+      errorHandler(req, res, e);
+    }
+  }
+
+  async deleteTransaction(req, res) {
+    try {
+      const transaction = req.transaction;
+      await transaction.remove();
+      return responseNormalizer(200, res, 'deleted');
     } catch (e) {
       errorHandler(req, res, e);
     }
@@ -171,7 +182,9 @@ class TransactionController {
       if (!transaction) {
         throw new ApiError(404, 'Transaction is not found');
       }
-      if (transaction.userId !== user._id) {
+      console.log(transaction.userId);
+      console.log(user._id);
+      if (`${transaction.userId}` !== `${user._id}`) {
         throw new ApiError(403, 'Not of user transaction');
       }
       req.transaction = transaction;
