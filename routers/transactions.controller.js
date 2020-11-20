@@ -120,6 +120,21 @@ class TransactionController {
     }
   }
 
+  async getMonthStats(req, res) {
+    try {
+      const { familyId } = req.user;
+      const { month, year } = req.query;
+      const transes = await transactionModel.getFamilyMonthReport(
+        familyId,
+        Number(month),
+        Number(year),
+      );
+      return responseNormalizer(200, res, { transes });
+    } catch (e) {
+      errorHandler(req, res, e);
+    }
+  }
+
   async getCurrentMonth(req, res) {
     try {
       const { familyId } = req.user;

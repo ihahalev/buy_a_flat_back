@@ -39,6 +39,14 @@ router.get(
 );
 
 router.get(
+  '/stats/month',
+  authCheck,
+  transactionsController.familyAuthorization,
+  transactionsController.validateAnnualStatsQuery,
+  transactionsController.getMonthStats,
+);
+
+router.get(
   '/month/current',
   authCheck,
   transactionsController.familyAuthorization,
