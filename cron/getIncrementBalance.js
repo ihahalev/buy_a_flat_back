@@ -17,7 +17,7 @@ async function main() {
         allFamilies.map(async (item) => {
           item.giftsForUnpacking = Math.floor(
             (item.balance * item.flatSquareMeters) / item.flatPrice -
-              item.giftsUnpacked,
+            item.giftsUnpacked,
           );
 
           const sum = item.totalSalary + item.passiveIncome;
