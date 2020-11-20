@@ -253,7 +253,7 @@ transactionSchema.static('getFamilyMonthBalance', async function (familyId) {
   }
 });
 
-transactionSchema.static('getDayTransactions', async function (
+transactionSchema.static('getDayRecords', async function (
   familyId,
   date,
   page,

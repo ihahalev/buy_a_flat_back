@@ -11,6 +11,23 @@ router.post(
   transactionsController.createTransaction,
 );
 
+router.put(
+  '/:transactionId',
+  authCheck,
+  transactionsController.familyAuthorization,
+  transactionsController.transactionAuthorization,
+  transactionsController.validateTransactionUpdate,
+  transactionsController.updateTransaction,
+);
+
+router.delete(
+  '/:transactionId',
+  authCheck,
+  transactionsController.familyAuthorization,
+  transactionsController.transactionAuthorization,
+  transactionsController.createTransaction,
+);
+
 router.get('/categories', authCheck, transactionsController.getCategories);
 
 router.get(
