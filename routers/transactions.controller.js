@@ -38,10 +38,7 @@ class TransactionController {
       const family = await familyModel.findById(familyId);
       if (_id) {
         family.dayLimit -= amount;
-        const incomeSavings =
-          ((family.totalSalary + family.passiveIncome) *
-            family.incomePercentageToSavings) /
-          100;
+        const incomeSavings = family.getDesiredSavings();
         family.monthLimit = monthBalance - incomeSavings;
         await family.save();
       }
