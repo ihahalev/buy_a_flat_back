@@ -10,13 +10,9 @@ async function main() {
       const allFamilies = await familyModel.find({});
 
       await Promise.all(
+
         allFamilies.map(async (item) => {
-          const {
-            _id,
-            totalSalary,
-            passiveIncome,
-            incomePercentageToSavings,
-          } = item;
+          const { _id, } = item;
 
           const date = new Date();
           const month = date.getMonth();
@@ -28,9 +24,8 @@ async function main() {
             _id,
           );
 
-          const sum = totalSalary + passiveIncome;
-          const available =
-            monthBalance - (sum * incomePercentageToSavings) / 100;
+          const desiredSavings = item.getDesiredSavings();
+          const available = monthBalance - desiredSavings;
           const dailySum = available / daysToMonthEnd;
 
           await familyModel.findByIdAndUpdate(
