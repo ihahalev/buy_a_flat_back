@@ -38,10 +38,7 @@ class TransactionController {
       const family = await familyModel.findById(familyId);
       if (_id) {
         family.dayLimit -= amount;
-        const incomeSavings =
-          ((family.totalSalary + family.passiveIncome) *
-            family.incomePercentageToSavings) /
-          100;
+        const incomeSavings = family.getDesiredSavings();
         family.monthLimit = monthBalance - incomeSavings;
         await family.save();
       }
@@ -79,7 +76,6 @@ class TransactionController {
         transaction.comment = comment;
         updateFields.comment = comment;
       }
-      console.log(updateFields);
       await transaction.save();
       return responseNormalizer(200, res, updateFields);
     } catch (e) {
@@ -109,12 +105,12 @@ class TransactionController {
     try {
       const { familyId } = req.user;
       const { month, year } = req.query;
-      const transes = await transactionModel.getFamilyAnnualReport(
+      const annualReport = await transactionModel.getFamilyAnnualReport(
         familyId,
         Number(month),
         Number(year),
       );
-      return responseNormalizer(200, res, { transes });
+      return responseNormalizer(200, res, { annualReport });
     } catch (e) {
       errorHandler(req, res, e);
     }
@@ -124,12 +120,12 @@ class TransactionController {
     try {
       const { familyId } = req.user;
       const { month, year } = req.query;
-      const transes = await transactionModel.getFamilyMonthReport(
+      const monthReport = await transactionModel.getFamilyMonthReport(
         familyId,
         Number(month),
         Number(year),
       );
-      return responseNormalizer(200, res, { transes });
+      return responseNormalizer(200, res, { monthReport });
     } catch (e) {
       errorHandler(req, res, e);
     }
@@ -197,8 +193,6 @@ class TransactionController {
       if (!transaction) {
         throw new ApiError(404, 'Transaction is not found');
       }
-      console.log(transaction.userId);
-      console.log(user._id);
       if (`${transaction.userId}` !== `${user._id}`) {
         throw new ApiError(403, 'Not of user transaction');
       }
