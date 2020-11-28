@@ -52,7 +52,9 @@ class UserController {
 
       const token = await foundUser.generateAndSaveToken();
 
-      const { _id, name, familyId } = foundUser;
+      const { _id, name } = foundUser;
+
+      const familyId = await userModel.findOne({ _id }).populate('familyId');
 
       responseNormalizer(201, res, {
         user: { id: _id, username: name, email, familyId },
@@ -122,7 +124,9 @@ class UserController {
 
   async getCurrentUser(req, res) {
     try {
-      const { _id, name, email, familyId } = req.user;
+      const { _id, name, email } = req.user;
+
+      const familyId = await userModel.findOne({ _id }).populate('familyId');
 
       responseNormalizer(200, res, {
         id: _id,
