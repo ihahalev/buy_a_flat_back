@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const uuid = require('uuid').v4;
-const { userModel } = require('../database/models');
+const { userModel, familyModel } = require('../database/models');
 const { ApiError, errorHandler, mailer } = require('../helpers');
 const responseNormalizer = require('../normalizers/response-normalizer');
 const configEnv = require('../config.env');
@@ -39,7 +39,7 @@ class UserController {
     try {
       const { email, password } = req.body;
 
-      const foundUser = await userModel.findOne({ email });
+      const foundUser = await userModel.findOne({ email }).populate('familyId');
 
       if (!foundUser) {
         throw new ApiError(401, 'Email or password is wrong');
@@ -52,12 +52,10 @@ class UserController {
 
       const token = await foundUser.generateAndSaveToken();
 
-      const { _id, name } = foundUser;
-
-      const familyId = await userModel.findOne({ _id }).populate('familyId');
+      const { _id, name, familyId } = foundUser;
 
       responseNormalizer(201, res, {
-        user: { id: _id, username: name, email, familyId },
+        user: { id: _id, username: name, email, currentFamily: familyId },
         token,
       });
     } catch (err) {
@@ -124,15 +122,31 @@ class UserController {
 
   async getCurrentUser(req, res) {
     try {
-      const { _id, name, email } = req.user;
+      const { _id, name, email, familyId } = req.user;
 
-      const familyId = await userModel.findOne({ _id }).populate('familyId');
+      const currentFamily = await familyModel.findById(familyId);
+
+      const {
+        balance,
+        flatPrice,
+        flatSquareMeters,
+        totalSalary,
+        passiveIncome,
+        incomePercentageToSavings,
+        giftsForUnpacking,
+      } = currentFamily;
 
       responseNormalizer(200, res, {
         id: _id,
         username: name,
         email,
-        familyId,
+        balance,
+        flatPrice,
+        flatSquareMeters,
+        totalSalary,
+        passiveIncome,
+        incomePercentageToSavings,
+        giftsForUnpacking,
       });
     } catch (err) {
       errorHandler(req, res, err);
