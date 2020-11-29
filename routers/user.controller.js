@@ -54,8 +54,31 @@ class UserController {
 
       const { _id, name, familyId } = foundUser;
 
+      const {
+        balance,
+        flatPrice,
+        flatSquareMeters,
+        totalSalary,
+        passiveIncome,
+        incomePercentageToSavings,
+        giftsForUnpacking,
+      } = familyId;
+
       responseNormalizer(201, res, {
-        user: { id: _id, username: name, email, currentFamily: familyId },
+        user: {
+          id: _id,
+          username: name,
+          email,
+          currentFamily: {
+            balance,
+            flatPrice,
+            flatSquareMeters,
+            totalSalary,
+            passiveIncome,
+            incomePercentageToSavings,
+            giftsForUnpacking,
+          },
+        },
         token,
       });
     } catch (err) {
@@ -124,7 +147,7 @@ class UserController {
     try {
       const { _id, name, email, familyId } = req.user;
 
-      const currentFamily = await familyModel.findById(familyId);
+      const findFamily = await familyModel.findById(familyId);
 
       const {
         balance,
@@ -134,19 +157,21 @@ class UserController {
         passiveIncome,
         incomePercentageToSavings,
         giftsForUnpacking,
-      } = currentFamily;
+      } = findFamily;
 
       responseNormalizer(200, res, {
         id: _id,
         username: name,
         email,
-        balance,
-        flatPrice,
-        flatSquareMeters,
-        totalSalary,
-        passiveIncome,
-        incomePercentageToSavings,
-        giftsForUnpacking,
+        currentFamily: {
+          balance,
+          flatPrice,
+          flatSquareMeters,
+          totalSalary,
+          passiveIncome,
+          incomePercentageToSavings,
+          giftsForUnpacking,
+        },
       });
     } catch (err) {
       errorHandler(req, res, err);
