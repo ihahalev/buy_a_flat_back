@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jsonWebToken = require('jsonwebtoken');
-const config = require('../../config.env');
 const { ObjectId } = require('mongodb');
+const config = require('../../config.env');
 
 const UserSchema = new mongoose.Schema(
   {

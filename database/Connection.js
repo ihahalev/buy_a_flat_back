@@ -6,18 +6,20 @@ class Connection {
     this.connection = null;
     this.database = null;
   }
+
   getCollection() {
     return this.database.collection(configEnv.dbCollection);
   }
+
   async connect() {
-    const connectionStatePromise = new Promise((reslove, reject) => {
+    const connectionStatePromise = new Promise((resolve, reject) => {
       mongoose.connection.on('error', (e) => {
         console.log('Database connection failed');
         process.exit(1);
       });
       mongoose.connection.on('open', () => {
         console.log('Database connection successful');
-        reslove();
+        resolve();
       });
     });
     await mongoose.connect(`${configEnv.dbConnectionUrl}/${configEnv.dbName}`, {

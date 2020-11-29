@@ -12,7 +12,9 @@
     "dev": "nodemon index.js",
     "jest": "jest --detectOpenHandles",
     "jest:coverage": "jest --coverage",
-    "jest:watch": "jest --watchAll"
+    "jest:watch": "jest --watchAll",
+    "eslint": "eslint .",
+    "eslint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -25,10 +27,17 @@
   },
   "homepage": "https://github.com/ihahalev/buy_a_flat_back#readme",
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "faker": "^5.1.0",
     "jest": "^26.6.0",
     "mocha": "^8.1.3",
     "nodemon": "^2.0.4",
+    "prettier": "^1.19.1",
+    "prettier-airbnb-config": "^1.0.0",
     "should": "^13.2.3",
     "sinon": "^9.1.0",
     "supertest": "^5.0.0"

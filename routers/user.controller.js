@@ -7,6 +7,7 @@ const configEnv = require('../config.env');
 
 class UserController {
   constructor() {}
+
   async userRegister(req, res) {
     try {
       const { name, email, password } = req.body;
@@ -33,7 +34,7 @@ class UserController {
     }
   }
 
-  //==================================================================
+  //= =================================================================
 
   async userLogin(req, res) {
     try {
@@ -55,7 +56,9 @@ class UserController {
       const { _id, name, familyId } = foundUser;
 
       responseNormalizer(201, res, {
-        user: { id: _id, username: name, email, familyId },
+        user: {
+          id: _id, username: name, email, familyId,
+        },
         token,
       });
     } catch (err) {
@@ -63,7 +66,7 @@ class UserController {
     }
   }
 
-  //=============================================
+  //= ============================================
 
   async verifyEmail(req, res, next) {
     try {
@@ -83,7 +86,7 @@ class UserController {
     }
   }
 
-  //==================================================
+  //= =================================================
 
   validateUserObject(req, res, next) {
     try {
@@ -103,7 +106,7 @@ class UserController {
     }
   }
 
-  //========================================
+  //= =======================================
 
   async logout(req, res) {
     try {
@@ -118,11 +121,13 @@ class UserController {
     }
   }
 
-  //==========================
+  //= =========================
 
   async getCurrentUser(req, res) {
     try {
-      const { _id, name, email, familyId } = req.user;
+      const {
+        _id, name, email, familyId,
+      } = req.user;
 
       responseNormalizer(200, res, {
         id: _id,

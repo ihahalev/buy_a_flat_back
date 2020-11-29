@@ -1,25 +1,22 @@
-const express = require("express");
+const express = require('express');
+
 const familiesRouter = express.Router();
 const familiesController = require('./families.controller');
 
 const authorization = require('../middlewares/auth');
 
-familiesRouter.post("/", authorization,
+familiesRouter.post('/', authorization,
   familiesController.validateCreatedFamilyObject,
-  familiesController.createFamily,
-);
+  familiesController.createFamily);
 
-familiesRouter.get("/current", authorization,
-  familiesController.getCurrentFamily,
-);
+familiesRouter.get('/current', authorization,
+  familiesController.getCurrentFamily);
 
-familiesRouter.get("/stats/flat", authorization,
-  familiesController.getStatsFlatFamily,
-);
+familiesRouter.get('/stats/flat', authorization,
+  familiesController.getStatsFlatFamily);
 
-familiesRouter.put("/", authorization,
+familiesRouter.put('/', authorization,
   familiesController.validateUpdateFamilyObject,
-  familiesController.updateFamily,
-);
+  familiesController.updateFamily);
 
 module.exports = familiesRouter;

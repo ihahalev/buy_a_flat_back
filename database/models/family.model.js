@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -14,10 +14,9 @@ const familySchema = new Schema({
   dayLimit: { type: Number, default: 0 },
   monthLimit: { type: Number, default: 0 },
 },
-  { timestamps: true },
-);
+{ timestamps: true });
 
-familySchema.method("updateGiftsUnpack", function () {
+familySchema.method('updateGiftsUnpack', function () {
   if (this.giftsForUnpacking <= 0) {
     this.giftsForUnpacking = 0;
 
@@ -31,8 +30,8 @@ familySchema.method("updateGiftsUnpack", function () {
     };
   }
 
-  this.giftsForUnpacking = this.giftsForUnpacking - 1;
-  this.giftsUnpacked = this.giftsUnpacked + 1;
+  this.giftsForUnpacking -= 1;
+  this.giftsUnpacked += 1;
 
   return {
     forUnpacking: this.giftsForUnpacking,

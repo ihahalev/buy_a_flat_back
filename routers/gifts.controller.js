@@ -32,9 +32,8 @@ class giftsController {
         gifts: {
           giftsUnpacked,
           giftsForUnpacking,
-        }
+        },
       });
-
     } catch (err) {
       logger.error(err);
       errorHandler(req, res, err);

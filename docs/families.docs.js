@@ -23,19 +23,19 @@ const familyEndpoints = {
           description: 'Authorization',
           required: true,
           type: 'string',
-        }
+        },
       ],
       responses: {
-        '400': {
+        400: {
           description: 'Request body format is invalid',
         },
-        '401': {
+        401: {
           description: 'User not authorized',
         },
-        '409': {
+        409: {
           description: 'User already created family/is a part of family',
         },
-        '200': {
+        200: {
           description: 'Family was created in DB successfully',
           schema: {
             $ref: '#/definitions/Family',
@@ -67,19 +67,19 @@ const familyEndpoints = {
           description: 'Authorization',
           required: true,
           type: 'string',
-        }
+        },
       ],
       responses: {
-        '400': {
+        400: {
           description: 'User request body format is invalid',
         },
-        '401': {
+        401: {
           description: 'User not authorized',
         },
-        '409': {
+        409: {
           description: 'User already created family / is a part of family',
         },
-        '200': {
+        200: {
           description: 'Family was created in DB successfully',
           schema: {
             $ref: '#/definitions/Family',
@@ -103,16 +103,16 @@ const familyEndpoints = {
           description: 'Authorization',
           required: true,
           type: 'string',
-        }
+        },
       ],
       responses: {
-        '401': {
+        401: {
           description: 'User not authorized',
         },
-        '404': {
+        404: {
           description: 'family not found for that user',
         },
-        '200': {
+        200: {
           description: 'All info from family document',
           schema: {
             $ref: '#/definitions/Family',
@@ -136,16 +136,16 @@ const familyEndpoints = {
           description: 'Authorization',
           required: true,
           type: 'string',
-        }
+        },
       ],
       responses: {
-        '401': {
+        401: {
           description: 'User not authorized',
         },
-        '403': {
+        403: {
           description: 'user not a member of family',
         },
-        '200': {
+        200: {
           description: 'Flat stats as for today',
           schema: {
             $ref: '#/definitions/FamilyStats',
@@ -181,7 +181,7 @@ const familyDefinitions = {
           incomePercentageToSavings: {
             type: 'number',
           },
-        }
+        },
       },
       gifts: {
         type: 'object',
@@ -192,7 +192,7 @@ const familyDefinitions = {
           giftsForUnpacking: {
             type: 'number',
           },
-        }
+        },
       },
     },
     xml: {
@@ -227,7 +227,7 @@ const familyDefinitions = {
           giftsForUnpacking: {
             type: 'number',
           },
-        }
+        },
       },
 
     },

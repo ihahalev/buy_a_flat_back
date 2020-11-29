@@ -1,4 +1,5 @@
 const ApiError = require('../helpers/ApiError');
+
 const responseNormalizer = (status, res, object) => {
   let isError = false;
 

@@ -1,4 +1,22 @@
-{
+ {
+   "extends": ["airbnb-base"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+    "plugins": [
+    "prettier"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 8
+  },
   "rules": {
     // EXPLICITLY CONFIGURED RULES
 
@@ -18,7 +36,7 @@
     "no-iterator": "error",
     "no-lone-blocks": "error",
     "no-loop-func": "error",
-    "no-magic-numbers": "error",
+    // "no-magic-numbers": "error",
     "no-multi-spaces": "error",
     "no-multi-str": "error",
     "no-new": "error",
@@ -99,6 +117,7 @@
     "getter-return": "error",
     "for-direction": "error",
     // "no-console":                       "error",
+    "no-console": "off",
     "no-constant-condition": "error",
     "no-debugger": "error",
     "no-dupe-args": "error",
@@ -128,19 +147,8 @@
     "no-octal": "error",
     "no-self-assign": "error",
     "no-useless-escape": "error",
-    "no-undef": "error",
+    // "no-undef": "error",
     "no-inner-declarations": ["error", "functions"]
-  },
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "sourceType": "module",
-    "ecmaVersion": 8
-  },
-  "env": {
-    "node": true,
-    "es6": true,
-    "mocha": true
-  },
-  "extends": "eslint:recommended",
-  "globals": {}
+  }
+
 }

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const {
   Types: { ObjectId },
 } = mongoose;
@@ -188,7 +189,7 @@ transactionSchema.static('getFamilyMonthBalance', async function (familyId) {
   const groupRes = await this.aggregate([
     {
       $match: {
-        familyId: familyId,
+        familyId,
       },
     },
     {
@@ -223,16 +224,15 @@ transactionSchema.static('getFamilyMonthBalance', async function (familyId) {
       return 0;
     }
     return monthBalance;
-  } else {
-    return 0;
   }
+  return 0;
 });
 
 transactionSchema.static(
   'getDayRecords',
   async function (familyId, date, page, limit) {
     const startDate = new Date(date);
-    let endDate = new Date(date);
+    const endDate = new Date(date);
     endDate.setDate(startDate.getDate() + 1);
     return this.aggregate([
       {
@@ -271,7 +271,7 @@ transactionSchema.static(
       groupRes = await this.aggregate([
         {
           $match: {
-            familyId: familyId,
+            familyId,
           },
         },
         {
@@ -347,9 +347,8 @@ transactionSchema.static(
         return 0;
       }
       return totalSavings;
-    } else {
-      return 0;
     }
+    return 0;
   },
 );
 

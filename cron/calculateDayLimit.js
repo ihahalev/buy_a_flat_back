@@ -2,17 +2,18 @@ const cron = require('node-cron');
 const { familyModel, transactionModel } = require('../database/models');
 
 const { getLogger } = require('../helpers');
+
 const logger = getLogger('calculateDayLimit');
 
 async function main() {
   try {
-    await cron.schedule('0 0 * * *', async function () {
+    await cron.schedule('0 0 * * *', async () => {
       const allFamilies = await familyModel.find({});
 
       await Promise.all(
 
         allFamilies.map(async (item) => {
-          const { _id, } = item;
+          const { _id } = item;
 
           const date = new Date();
           const month = date.getMonth();
@@ -40,7 +41,7 @@ async function main() {
       );
 
       logger.info(
-        `FamilyModel update  dailyLimit and monthLimit every day of (00:00)`,
+        'FamilyModel update  dailyLimit and monthLimit every day of (00:00)',
       );
     });
   } catch (err) {

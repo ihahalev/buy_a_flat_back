@@ -3,6 +3,7 @@ const configEnv = require('../config.env');
 
 class OauthController {
   constructor() {}
+
   async findOrCreate(profile, callback) {
     try {
       const { email } = profile._json;

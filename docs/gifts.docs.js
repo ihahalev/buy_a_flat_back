@@ -16,13 +16,13 @@ const giftsEndpoints = {
         },
       ],
       responses: {
-        '401': {
+        401: {
           description: 'user not authorized',
         },
-        '403': {
+        403: {
           description: 'user not a member of family',
         },
-        '200': {
+        200: {
           description: 'decrement giftsForUnpacking & increment giftsUnpacked values',
         },
       },
@@ -35,7 +35,7 @@ const giftsDefinitions = {
     type: 'object',
     properties: {
       gifts: {
-        type: "object",
+        type: 'object',
         properties: {
           giftsForUnpacking: {
             type: 'number',
@@ -43,8 +43,8 @@ const giftsDefinitions = {
           giftsUnpacked: {
             type: 'number',
           },
-        }
-      }
+        },
+      },
     },
     xml: {
       name: 'Gifts',

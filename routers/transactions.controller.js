@@ -16,8 +16,10 @@ class TransactionController {
   async createTransaction(req, res) {
     try {
       const { _id: userId, familyId } = req.user;
-      const { amount, type, category, comment } = req.body;
-      const defCategory = category ? category : transactionCategories[0].name;
+      const {
+        amount, type, category, comment,
+      } = req.body;
+      const defCategory = category || transactionCategories[0].name;
       const {
         _id,
         type: dbType,
@@ -29,7 +31,7 @@ class TransactionController {
         category: defCategory,
         comment,
         familyId,
-        userId: userId,
+        userId,
         transactionDate: Date.now(),
       });
       const monthBalance = await transactionModel.getFamilyMonthBalance(
@@ -60,7 +62,7 @@ class TransactionController {
 
   async updateTransaction(req, res) {
     try {
-      const transaction = req.transaction;
+      const { transaction } = req;
       const { amount, category, comment } = req.body;
       const updateFields = {};
 
@@ -85,7 +87,7 @@ class TransactionController {
 
   async deleteTransaction(req, res) {
     try {
-      const transaction = req.transaction;
+      const { transaction } = req;
       await transaction.remove();
       return responseNormalizer(200, res, 'deleted');
     } catch (e) {
@@ -185,7 +187,7 @@ class TransactionController {
 
   async transactionAuthorization(req, res, next) {
     try {
-      const user = req.user;
+      const { user } = req;
       const { transactionId } = req.params;
 
       const transaction = await transactionModel.findById(transactionId);
@@ -249,8 +251,11 @@ class TransactionController {
   validateAnnualStatsQuery(req, res, next) {
     try {
       const { error: validationError } = Joi.object({
-        year: Joi.number().positive().integer().min(1970).required(),
-        month: Joi.number().positive().integer().min(1).max(12).required(),
+        year: Joi.number().positive().integer().min(1970)
+          .required(),
+        month: Joi.number().positive().integer().min(1)
+          .max(12)
+          .required(),
       }).validate(req.query);
 
       if (validationError) {

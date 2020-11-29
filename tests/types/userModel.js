@@ -14,6 +14,7 @@ class userModel {
     this.tokens[0].token = token;
     return this;
   }
+
   setFamily(familyId) {
     this.familyId = familyId;
     return this;
