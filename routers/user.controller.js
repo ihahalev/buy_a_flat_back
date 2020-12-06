@@ -82,7 +82,7 @@ class UserController {
           id: _id,
           username: name,
           email,
-          familyId: currentFamily,
+          currentFamily,
         },
         token,
       });
@@ -181,7 +181,7 @@ class UserController {
         id: _id,
         username: name,
         email,
-        familyId: currentFamily,
+        currentFamily,
       });
     } catch (err) {
       errorHandler(req, res, err);
