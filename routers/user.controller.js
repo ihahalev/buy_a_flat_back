@@ -54,30 +54,35 @@ class UserController {
 
       const { _id, name, familyId } = foundUser;
 
-      const {
-        balance,
-        flatPrice,
-        flatSquareMeters,
-        totalSalary,
-        passiveIncome,
-        incomePercentageToSavings,
-        giftsForUnpacking,
-      } = familyId;
+      let currentFamily = null;
+
+      if (familyId) {
+        const {
+          balance,
+          flatPrice,
+          flatSquareMeters,
+          totalSalary,
+          passiveIncome,
+          incomePercentageToSavings,
+          giftsForUnpacking,
+        } = familyId;
+        currentFamily = {
+          balance,
+          flatPrice,
+          flatSquareMeters,
+          totalSalary,
+          passiveIncome,
+          incomePercentageToSavings,
+          giftsForUnpacking,
+        };
+      }
 
       responseNormalizer(201, res, {
         user: {
           id: _id,
           username: name,
           email,
-          currentFamily: {
-            balance,
-            flatPrice,
-            flatSquareMeters,
-            totalSalary,
-            passiveIncome,
-            incomePercentageToSavings,
-            giftsForUnpacking,
-          },
+          familyId: currentFamily,
         },
         token,
       });
@@ -149,21 +154,10 @@ class UserController {
 
       const findFamily = await familyModel.findById(familyId);
 
-      const {
-        balance,
-        flatPrice,
-        flatSquareMeters,
-        totalSalary,
-        passiveIncome,
-        incomePercentageToSavings,
-        giftsForUnpacking,
-      } = findFamily;
+      let currentFamily = null;
 
-      responseNormalizer(200, res, {
-        id: _id,
-        username: name,
-        email,
-        currentFamily: {
+      if (findFamily) {
+        const {
           balance,
           flatPrice,
           flatSquareMeters,
@@ -171,7 +165,23 @@ class UserController {
           passiveIncome,
           incomePercentageToSavings,
           giftsForUnpacking,
-        },
+        } = findFamily;
+        currentFamily = {
+          balance,
+          flatPrice,
+          flatSquareMeters,
+          totalSalary,
+          passiveIncome,
+          incomePercentageToSavings,
+          giftsForUnpacking,
+        };
+      }
+
+      responseNormalizer(200, res, {
+        id: _id,
+        username: name,
+        email,
+        familyId: currentFamily,
       });
     } catch (err) {
       errorHandler(req, res, err);
