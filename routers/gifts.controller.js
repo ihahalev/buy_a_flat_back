@@ -5,7 +5,7 @@ const responseNormalizer = require('../normalizers/response-normalizer');
 const logger = getLogger('gifts');
 
 class giftsController {
-  constructor() { }
+  constructor() {}
 
   async unpackGift(req, res) {
     try {
@@ -19,7 +19,10 @@ class giftsController {
 
       const { forUnpacking, unpacked } = family.updateGiftsUnpack();
 
-      const { giftsForUnpacking, giftsUnpacked } = await familyModel.findByIdAndUpdate(
+      const {
+        giftsForUnpacking,
+        giftsUnpacked,
+      } = await familyModel.findByIdAndUpdate(
         familyId,
         {
           giftsForUnpacking: forUnpacking,
@@ -30,11 +33,10 @@ class giftsController {
 
       return responseNormalizer(200, res, {
         gifts: {
-          giftsUnpacked,
+          // giftsUnpacked,
           giftsForUnpacking,
-        }
+        },
       });
-
     } catch (err) {
       logger.error(err);
       errorHandler(req, res, err);

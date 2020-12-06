@@ -172,7 +172,7 @@ class TransactionController {
       if (!familyId) {
         throw new ApiError(403, 'Not part of a Family');
       }
-      const family = familyModel.findById(familyId);
+      const family = await familyModel.findById(familyId);
       if (!family) {
         throw new ApiError(403, 'Not part of a Family');
       }
