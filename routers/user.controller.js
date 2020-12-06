@@ -58,6 +58,7 @@ class UserController {
 
       if (familyId) {
         const {
+          _id,
           balance,
           flatPrice,
           flatSquareMeters,
@@ -67,6 +68,7 @@ class UserController {
           giftsForUnpacking,
         } = familyId;
         currentFamily = {
+          id: _id,
           balance,
           flatPrice,
           flatSquareMeters,
@@ -158,6 +160,7 @@ class UserController {
 
       if (findFamily) {
         const {
+          _id,
           balance,
           flatPrice,
           flatSquareMeters,
@@ -167,6 +170,7 @@ class UserController {
           giftsForUnpacking,
         } = findFamily;
         currentFamily = {
+          id: _id,
           balance,
           flatPrice,
           flatSquareMeters,
@@ -178,10 +182,12 @@ class UserController {
       }
 
       responseNormalizer(200, res, {
-        id: _id,
-        username: name,
-        email,
-        currentFamily,
+        user: {
+          id: _id,
+          username: name,
+          email,
+          currentFamily,
+        },
       });
     } catch (err) {
       errorHandler(req, res, err);
