@@ -149,6 +149,12 @@ class FamilyController {
     try {
       const { familyId } = req.user;
 
+      await transactionModel.updateIncomeAndPercent(
+        familyId,
+        Number(req.body.totalSalary) + Number(req.body.passiveIncome),
+        Number(req.body.incomePercentageToSavings),
+      );
+
       const familyToUpdate = await familyModel.findByIdAndUpdate(
         familyId,
         req.body,

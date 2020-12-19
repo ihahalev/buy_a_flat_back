@@ -27,6 +27,35 @@ const transactionSchema = new mongoose.Schema(
 );
 
 transactionSchema.static(
+  'updateIncomeAndPercent',
+  async function (familyId, income, percent) {
+    const date = new Date();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const startDate = `${date.getFullYear()}-${month}-01`;
+    await this.updateOne(
+      {
+        familyId,
+        transactionDate: {
+          $gte: new Date(startDate),
+        },
+        type: 'INCOME',
+      },
+      { amount: income },
+    );
+    await this.updateOne(
+      {
+        familyId,
+        transactionDate: {
+          $gte: new Date(startDate),
+        },
+        type: 'PERCENT',
+      },
+      { amount: percent },
+    );
+  },
+);
+
+transactionSchema.static(
   'getFamilyAnnualReport',
   async function (familyId, month, year) {
     const calcMonth = String(month + 1).padStart(2, '0');
