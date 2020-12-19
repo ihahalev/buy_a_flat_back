@@ -168,7 +168,7 @@ class FamilyController {
         Number(req.body.incomePercentageToSavings),
       );
 
-      const monthBalance = await transactionModel.getFamilyMonthBalance(
+      const { monthBalance } = await transactionModel.getFamilyMonthBalance(
         familyId,
       );
 

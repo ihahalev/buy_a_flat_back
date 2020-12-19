@@ -32,15 +32,14 @@ class TransactionController {
         userId: userId,
         transactionDate: Date.now(),
       });
-      const monthBalance = await transactionModel.getFamilyMonthBalance(
-        familyId,
-      );
+      const {
+        monthBalance,
+        expToday,
+      } = await transactionModel.getFamilyMonthBalance(familyId);
       const family = await familyModel.findById(familyId);
       if (_id) {
-        family.dayLimit -= amount;
-        const incomeSavings = family.getDesiredSavings();
-        family.monthLimit = monthBalance - incomeSavings;
-        await family.save();
+        family.dayLimit -= expToday;
+        family.monthLimit -= expToday;
       }
       return responseNormalizer(201, res, {
         _id,
@@ -49,7 +48,7 @@ class TransactionController {
         category: dbCategory,
         comment,
         transactionDate,
-        monthBalance,
+        monthBalance: monthBalance - expToday,
         dayLimit: family.dayLimit,
         monthLimit: family.monthLimit,
       });
@@ -134,14 +133,15 @@ class TransactionController {
   async getCurrentMonth(req, res) {
     try {
       const { familyId } = req.user;
-      const monthBalance = await transactionModel.getFamilyMonthBalance(
-        familyId,
-      );
+      const {
+        monthBalance,
+        expToday,
+      } = await transactionModel.getFamilyMonthBalance(familyId);
       const { dayLimit, monthLimit } = req.family;
       return responseNormalizer(200, res, {
-        monthBalance,
-        dayLimit,
-        monthLimit,
+        monthBalance: monthBalance - expToday,
+        dayLimit: dayLimit - expToday,
+        monthLimit: monthLimit - expToday,
       });
     } catch (e) {
       errorHandler(req, res, e);
