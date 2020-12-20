@@ -41,6 +41,7 @@ class TransactionController {
         family.dayLimit -= expToday;
         family.monthLimit -= expToday;
       }
+      console.log('createTransaction', family.dayLimit, family.monthLimit);
       return responseNormalizer(201, res, {
         _id,
         amount,

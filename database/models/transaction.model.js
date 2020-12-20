@@ -324,7 +324,10 @@ transactionSchema.static('getFamilyMonthBalance', async function (familyId) {
     }
     console.log('getFamilyMonthBalance', income, expenses, expToday);
     const monthBalance = income - expenses;
-    return { monthBalance, expToday };
+    return {
+      monthBalance: monthBalance.toFixed(2),
+      expToday: expToday.toFixed(2),
+    };
   } else {
     return { monthBalance: 0, expToday: 0 };
   }
