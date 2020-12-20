@@ -207,7 +207,7 @@ class TransactionController {
   validateTransactionObject(req, res, next) {
     try {
       const { error: validationError } = Joi.object({
-        amount: Joi.number().positive().integer().required(),
+        amount: Joi.number().positive().required(),
         type: Joi.string().valid(...transactionTypes),
         category: Joi.alternatives().try(
           Joi.string().valid(...transactionCategories),
@@ -229,7 +229,7 @@ class TransactionController {
   validateTransactionUpdate(req, res, next) {
     try {
       const { error: validationError } = Joi.object({
-        amount: Joi.number().positive().integer(),
+        amount: Joi.number().positive(),
         category: Joi.alternatives().try(
           Joi.string().valid(...transactionCategories),
           Joi.string().empty('').default(transactionCategories[0]),

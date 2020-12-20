@@ -19,10 +19,6 @@ async function main() {
 
           const { dayLimit, monthLimit } = expenseLimits(item, monthBalance);
 
-          const desiredSavings = item.getDesiredSavings();
-          const available = monthBalance - desiredSavings;
-          const dailySum = available / daysToMonthEnd;
-
           await familyModel.findByIdAndUpdate(
             _id,
             {
