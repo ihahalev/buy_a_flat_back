@@ -295,6 +295,12 @@ transactionSchema.static('getFamilyMonthBalance', async function (familyId) {
 
   if (groupRes.length) {
     const [{ monthIncome, monthExpense, todayExpense }] = groupRes;
+    console.log(
+      'getFamilyMonthBalance groupRes',
+      monthIncome,
+      monthExpense,
+      todayExpense,
+    );
     let income;
     let expenses;
     let expToday;
