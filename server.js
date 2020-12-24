@@ -8,6 +8,7 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const FacebookStrategy = require('passport-facebook');
 const configEnv = require('./config.env');
 const {
+  basicRouter,
   usersRouter,
   familiesRouter,
   giftsRouter,
@@ -81,6 +82,7 @@ module.exports = class Server {
 
   initRoutes() {
     this.server.use('/', express.static(path.join(__dirname, 'public')));
+    this.server.use('/', basicRouter);
     this.server.use('/api/users', usersRouter);
     this.server.use('/api/transactions', transactionsRouter);
     this.server.use('/api/families', familiesRouter);
@@ -88,28 +90,24 @@ module.exports = class Server {
     this.server.use('/auth/facebook', facebookRouter);
     this.server.use('/auth/google', googleRouter);
     passport.use(
-      new GoogleStrategy(googleCred, function (
-        accessToken,
-        refreshToken,
-        profile,
-        done,
-      ) {
-        oauthController.findOrCreate(profile, function (err, user) {
-          done(err, user);
-        });
-      }),
+      new GoogleStrategy(
+        googleCred,
+        function (accessToken, refreshToken, profile, done) {
+          oauthController.findOrCreate(profile, function (err, user) {
+            done(err, user);
+          });
+        },
+      ),
     );
     passport.use(
-      new FacebookStrategy(facebookCred, function (
-        accessToken,
-        refreshToken,
-        profile,
-        done,
-      ) {
-        oauthController.findOrCreate(profile, function (err, user) {
-          done(err, user);
-        });
-      }),
+      new FacebookStrategy(
+        facebookCred,
+        function (accessToken, refreshToken, profile, done) {
+          oauthController.findOrCreate(profile, function (err, user) {
+            done(err, user);
+          });
+        },
+      ),
     );
     passport.serializeUser(function (user, done) {
       done(null, user);

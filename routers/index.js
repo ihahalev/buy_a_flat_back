@@ -4,3 +4,4 @@ exports.giftsRouter = require('./gifts.routrer');
 exports.usersRouter = require('./user.router');
 exports.googleRouter = require('./google.router');
 exports.facebookRouter = require('./facebook.router');
+exports.basicRouter = require('./basic.router');
